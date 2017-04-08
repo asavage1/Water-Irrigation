@@ -1,12 +1,13 @@
-document.getElementById('city').addEventListener('change', readURL, true);
-function readURL(){
-    file = document.getElementById("city").files[0];
-    reader = new FileReader();
-   reader.onloadend = function(){
-//   document.getElementById('clock').style.backgroundImage = "url(" + reader.result + ")";
-}
-   if(file){
-       console.log(reader.readAsDataURL(file));
-    }else{
-    }
+function previewFile() {
+  var preview = document.querySelector('img');
+  var file    = document.querySelector('input[type=file]').files[0];
+  var reader  = new FileReader();
+
+  reader.addEventListener("load", function () {
+    preview.src = reader.result;
+  }, false);
+
+  if (file) {
+    reader.readAsDataURL(file);
+  }
 }
