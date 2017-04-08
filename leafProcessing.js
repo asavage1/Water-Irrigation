@@ -86,7 +86,7 @@ var avg_pixels = function(canvas, img, width, height, imgd, pix, condensed_img, 
     for (var i = 0; i < leaf_contrast.length; i++) {
         leaf_contrast[i] = new Array(width);
     }
-    console.log(condensed_img)
+    //console.log(condensed_img)
 
     var count = 0;
     for (var i = 0; i < leaf_contrast.length; i++) {
@@ -98,8 +98,12 @@ var avg_pixels = function(canvas, img, width, height, imgd, pix, condensed_img, 
     }
 
     contrasts[THECOUNT - 1] = leaf_contrast;
-    if (THECOUNT < num_leaves)
-	start(THECOUNT+1)
+    if (THECOUNT < num_leaves) {
+    	start(THECOUNT+1)
+    } else {
+        var img = document.getElementById('load');
+        img.style.visibility = 'hidden';
+    }
 
     //convert_final();
 }
