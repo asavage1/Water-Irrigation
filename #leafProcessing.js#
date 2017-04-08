@@ -56,4 +56,17 @@ var split_img = function() {
     console.log(condensed_img);
 }
 
+var avg_pixels = function() {
+    for (var i = 0; i < pix.length; i++) {
+        
+    }
 
+
+
+    
+    for (var i = 0; i < width; i++) {
+        for (var j = 0; j < height; j++) {
+            
+        }
+    }
+}
