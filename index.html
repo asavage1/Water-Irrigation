@@ -16,14 +16,16 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   </head>
   <body>
-    <h1>Water Irrigation</h1>
-    <script src='leafProcessing.js'></script>
-    <input id="city" type="file" onchange = "previewFile()" style="position: fixed; top: -100em">
-    <label for="city">Click here to input pupulation density map</label>
-    <br><img src="" height="200" alt=""><br>
-    <img src="" id = "result" height="200" alt="">
-    <script src='bestFit.js'></script>
-    <script src='cityProcessing.js'></script>
+    <div class='container'>
+      <h1>Water Irrigation</h1>
+      <script src='leafProcessing.js'></script>
+      <input id="city" type="file" onchange = "previewFile()" style="position: fixed; top: -100em">
+      <label for="city">Click here to input population density map</label>
+      <br><img src="" height="200" alt=""><br>
+      <img src="" id = "result" height="200" alt="">
+      <script src='bestFit.js'></script>
+      <script src='cityProcessing.js'></script>
+    </div>
 
   </body>
 </html>

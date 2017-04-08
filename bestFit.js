@@ -79,7 +79,7 @@ var find_fit = function(map1, map2, leaf_ind, fit, fit_index) {
         fit = angle;
         fit_index = leaf_ind;
     }
-    if (leaf_ind < 9)
+    if (leaf_ind < num_leaves - 1)
         best_fit(leaf_ind + 1, fit, fit_index);
     else {
         //want to rotate leaf to map
