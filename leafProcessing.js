@@ -2,12 +2,35 @@
 // Andrew Savage and Elias Marcopoulos
 
 //constants:
-var split_size = 4;
-
+var split_size = 64;
 
 
 var split_img = function() {
-    condensed_img = []
+    condensed_img = new Array(Math.ceil(height / split_size));
+    for (var i = 0; i < condensed_img.length; i++) {
+        condensed_img[i] = new Array(Math.ceil(width / split_size));
+        for (var j = 0; j < condensed_img[i].length; j++) {
+            condensed_img[i][j] = new Array(4);
+            for (var k = 0; k < 4; k++) {
+                condensed_img[i][j][k] = 0;
+            }
+        }
+    }
+
+    counter = 0;
+    for (var i = 0; i < height; i++) {
+        for (var j = 0; j < width; j++) {
+            for (var k = 0; k < 4; k++) {
+                condensed_img[Math.floor(i / split_size)][Math.floor(j / split_size)][k] += pix[counter] / Math.pow(split_size, 2);
+                counter++;
+            }
+        }
+    }
+}
+
+/*
+var split_img = function() {
+    condensed_img = [];
 
     var array_ind = 0;
     for (var l = 0; l < height; l += split_size) {
@@ -55,7 +78,27 @@ var split_img = function() {
     }
     console.log(condensed_img);
 }
+*/
 
+var avg_pixels = function() {
+    leaf_contrast = new Array(height);
+    for (var i = 0; i < leaf_contrast.length; i++) {
+        leaf_contrast[i] = new Array(width);
+    }
+
+    count = 0;
+    for (var i = 0; i < leaf_contrast.length; i++) {
+        for (var j = 0; j < leaf_contrast[i].length; j++) {
+            var avg_boxes = take_avg_boxes(Math.floor(i / split_size), Math.floor(j / split_size));
+            leaf_contrast[i][j] = compute_diff(pix.slice(count,count+3),avg_boxes);
+            count+=4;
+        }
+    }
+
+    
+}
+
+/*
 var avg_pixels = function() {
     
     testing = []; // TESTING ARRAY, REMOVE
@@ -88,7 +131,7 @@ var avg_pixels = function() {
         }
     }
     console.log(leaf_density);
-}
+}*/
 
 var take_avg_boxes = function(i, j) { //using condensed_img
     var avg_red = 0
@@ -98,83 +141,85 @@ var take_avg_boxes = function(i, j) { //using condensed_img
     var total = 0;
     var up = (i - 1 >= 0);
     var down = (i + 1 < condensed_img.length);
-    var left = (j - 4 >= 0);
-    var right = (j + 5 < condensed_img[0].length);
+    var left = (j - 1 >= 0);
+    var right = (j + 1 < condensed_img[0].length);
 
     total++;
     //console.log(i, condensed_img.length);
     //console.log(j, condensed_img[0].length);
+    /*
     if (i > condensed_img.length || j > condensed_img[0].length) {
         console.log(i, j, condensed_img.length, condensed_img[0].length);
     }
+    */
     
-    avg_red += condensed_img[i][j];
-    avg_green += condensed_img[i][j + 1];
-    avg_blue += condensed_img[i][j + 2];
-    avg_alpha += condensed_img[i][j + 3];
+    avg_red += condensed_img[i][j][0];
+    avg_green += condensed_img[i][j][1];
+    avg_blue += condensed_img[i][j][2];
+    avg_alpha += condensed_img[i][j][3];
     
     if (left) {
         total++;
-        avg_red += condensed_img[i][j - 4];
-        avg_green += condensed_img[i][j - 3];
-        avg_blue += condensed_img[i][j - 2];
-        avg_alpha += condensed_img[i][j - 1];
+        avg_red += condensed_img[i][j - 1][0];
+        avg_green += condensed_img[i][j - 1][1];
+        avg_blue += condensed_img[i][j - 1][2];
+        avg_alpha += condensed_img[i][j - 1][3];
 
         if (up) {
             total++;
-            avg_red += condensed_img[i - 1][j - 4];
-            avg_green += condensed_img[i - 1][j - 3];
-            avg_blue += condensed_img[i - 1][j - 2];
-            avg_alpha += condensed_img[i - 1][j - 1];
+            avg_red += condensed_img[i - 1][j - 1][0];
+            avg_green += condensed_img[i - 1][j - 1][1];
+            avg_blue += condensed_img[i - 1][j - 1][2];
+            avg_alpha += condensed_img[i - 1][j - 1][3];
         }
 
         if (down) {
             total++;
-            avg_red += condensed_img[i + 1][j - 4];
-            avg_green += condensed_img[i + 1][j - 3];
-            avg_blue += condensed_img[i + 1][j - 2];
-            avg_alpha += condensed_img[i + 1][j - 1];
+            avg_red += condensed_img[i + 1][j - 1][0];
+            avg_green += condensed_img[i + 1][j - 1][1];
+            avg_blue += condensed_img[i + 1][j - 1][2];
+            avg_alpha += condensed_img[i + 1][j - 1][3];
         }
     }
 
     if (right) {
         total++;
-        avg_red += condensed_img[i][j + 5];
-        avg_green += condensed_img[i][j + 6];
-        avg_blue += condensed_img[i][j + 7];
-        avg_alpha += condensed_img[i][j + 8];
+        avg_red += condensed_img[i][j + 1][0];
+        avg_green += condensed_img[i][j + 1][1];
+        avg_blue += condensed_img[i][j + 1][2];
+        avg_alpha += condensed_img[i][j + 1][3];
 
         if (up) {
             total++;
-            avg_red += condensed_img[i - 1][j + 5];
-            avg_green += condensed_img[i - 1][j + 6];
-            avg_blue += condensed_img[i - 1][j + 7];
-            avg_alpha += condensed_img[i - 1][j + 8];
+            avg_red += condensed_img[i - 1][j + 1][0];
+            avg_green += condensed_img[i - 1][j + 1][1];
+            avg_blue += condensed_img[i - 1][j + 1][2];
+            avg_alpha += condensed_img[i - 1][j + 1][3];
         }
 
         if (down) {
             total++;
-            avg_red += condensed_img[i + 1][j + 5];
-            avg_green += condensed_img[i + 1][j + 6];
-            avg_blue += condensed_img[i + 1][j + 7];
-            avg_alpha += condensed_img[i + 1][j + 8];
+            avg_red += condensed_img[i + 1][j + 1][0];
+            avg_green += condensed_img[i + 1][j + 1][1];
+            avg_blue += condensed_img[i + 1][j + 1][2];
+            avg_alpha += condensed_img[i + 1][j + 1][3];
         }
     }
 
     if (up) {
         total++;
-        avg_red += condensed_img[i - 1][j + 1];
-        avg_green += condensed_img[i - 1][j + 2];
-        avg_blue += condensed_img[i - 1][j + 3];
-        avg_alpha += condensed_img[i - 1][j + 4];
+        avg_red += condensed_img[i - 1][j][0];
+        avg_green += condensed_img[i - 1][j][1];
+        avg_blue += condensed_img[i - 1][j][2];
+        avg_alpha += condensed_img[i - 1][j][3];
     }
 
     if (down) {
         total++;
-        avg_red += condensed_img[i + 1][j + 1];
-        avg_green += condensed_img[i + 1][j + 2];
-        avg_blue += condensed_img[i + 1][j + 3];
-        avg_alpha += condensed_img[i + 1][j + 4];
+        avg_red += condensed_img[i + 1][j][0];
+        avg_green += condensed_img[i + 1][j][1];
+        avg_blue += condensed_img[i + 1][j][2];
+        avg_alpha += condensed_img[i + 1][j][3];
     }
 
     avg_red /= total;
@@ -194,36 +239,43 @@ var compute_diff = function(v1, v2) { //v1.length = v2.length
 }
 
 
-
-// Convert leaf representation into canvas "output_pix"
 var convert_final = function() {
-    //condensed_img
-    //output_pix.width = condensed_img.length;
-    //output_pix.height = condensed_img[0].length;
     var ctx = output_pix.getContext("2d");
-    imgData = ctx.createImageData(condensed_img[0].length, condensed_img.length);
-
-    var max = 0;
-    for (var i = 0; i < 4 * condensed_img.length; i++) {
-        var m1 = Math.max.apply(Math, condensed_img[i]);
-        if (m1 > max) {max = m1;}
-    }
+    imgData = ctx.createImageData(4 * leaf_contrast[0].length, leaf_contrast.length);
+    output_pix.style.height='1200px';
+    output_pix.style.width = '1600px';
+    //imgData = ctx.createImageData(imgd);
     
-    for (var i = 0; i < imgData.height; i++) {
-        for (var j = 0; j < 4 * imgData.width; j+= 4) {
-            var pix_n = i * imgData.width * 4 + j;            
-            imgData.data[pix_n] = condensed_img[i][j] * 255 / max; //Math.max(255 + Math.log(condensed_img[i][j] / max));
-            imgData.data[pix_n + 1] = 0;
-            imgData.data[pix_n + 2] = 0;
-            imgData.data[pix_n + 3] = 255;
+    var max = 0;
+    var avg = 0
+    for (var i = 0; i < leaf_contrast.length; i++) {
+        for (var j = 0; j < leaf_contrast[0].length; j++) {
+            if (leaf_contrast[i][j] > max) {
+                max = leaf_contrast[i][j];
+            }
+            avg += leaf_contrast[i][j] / (leaf_contrast.length * leaf_contrast[0].length);
         }
     }
-    ctx.putImageData(imgData, 10, 10);
+    console.log(max, avg);
+
+    count = 0;
+    for (var i = 0; i < height; i++) {
+        for (var j = 0; j < 4 * width; j++) {
+            if (leaf_contrast[i][j] >= 0) {
+                imgData.data[count] = 255;
+            } else {
+                imgData.data[count] = 0;
+            }
+            //imgData.data[count] = leaf_contrast[i][j] * 255 / avg;//Math.pow(2, max - leaf_contrast[i][j]);
+            imgData.data[count + 1] = 0;
+            imgData.data[count + 2] = 0;
+            imgData.data[count + 3] = 255;
+            count += 4;
+        }
+    }
+    ctx.putImageData(imgData, 0, 0);
     document.getElementsByTagName("body")[0].append(output_pix);
-
-    console.log(imgData.data);
 }
-
 
 
 var canvas = document.createElement('canvas');
@@ -246,3 +298,5 @@ img.onload = function() {
 
     convert_final();
 }
+
+document.getElementsByTagName("body")[0].append(canvas);
