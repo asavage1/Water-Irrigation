@@ -50,7 +50,7 @@ var find_angle = function(v1, v2) {
         
 }
 
-var find_proj_angle(v1, v2) {
+var find_proj_angle = function(v1, v2) {
     var num = v1[0]*v2[0] + v1[1]*v2[1];
     var den1 = Math.sqrt(v1[0]*v1[0] + v1[1]*v1[1]);
     var den2 = Math.sqrt(v2[0]*v2[0] + v2[1]*v2[1]);
@@ -60,6 +60,7 @@ var find_proj_angle(v1, v2) {
 var find_fit = function(map1, map2, leaf_ind, fit, fit_index) {
     var p1 = fit_plane(map1);
     var p2 = fit_plane(map2);
+    console.log(p1, p2);
     var angle = Math.abs(find_angle(p1, p2));
     console.log(angle, fit);
     if (angle < fit) {
@@ -70,7 +71,14 @@ var find_fit = function(map1, map2, leaf_ind, fit, fit_index) {
     if (leaf_ind < 9)
         best_fit(leaf_ind + 1, fit, fit_index);
     else {
-        result(fit_index);
+        //want to rotate leaf to map
+        //rotate p1 to p2
+        p1 = fit_plane(contrasts[fit_index]).slice(0,2);
+        p2 = fit_plane(avg).slice(0,2);
+        console.log(p1, p2);
+        angle = find_proj_angle(p1, p2);
+        console.log(angle);
+        result(fit_index, angle);
     }
 }
 
