@@ -114,6 +114,7 @@ var rotate = function(b, t, l, r) {
 	return turns + 1;
 }*/
 
-var result = function(i) {
+var result = function(i, angle) {
 	document.getElementById("result").src = "leaf" + (i + 1) + ".png";
+	document.getElementById("result").transform = "rotate " +angle + "rad";
 }
