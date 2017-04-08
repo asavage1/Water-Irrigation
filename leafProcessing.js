@@ -277,7 +277,7 @@ var convert_final = function() {
         }
     }
     ctx.putImageData(imgData, 0, 0);
-    document.getElementsByTagName("body")[0].append(output_pix);
+  //  document.getElementsByTagName("body")[0].append(output_pix);
 }
 
 var contrasts = new Array(10);
