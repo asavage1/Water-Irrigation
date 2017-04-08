@@ -54,7 +54,8 @@ var find_proj_angle(v1, v2) {
     var num = v1[0]*v2[0] + v1[1]*v2[1];
     var den1 = Math.sqrt(v1[0]*v1[0] + v1[1]*v1[1]);
     var den2 = Math.sqrt(v2[0]*v2[0] + v2[1]*v2[1]);
-    return Math.acos(num / (den1 * den2));}
+    return Math.acos(num / (den1 * den2));
+}
 
 var find_fit = function(map1, map2, leaf_ind, fit, fit_index) {
     var p1 = fit_plane(map1);
