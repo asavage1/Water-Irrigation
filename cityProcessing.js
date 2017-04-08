@@ -101,7 +101,7 @@ var findMax = function () {
 //	while (xy1[1] < xy2[1] - h / 2 || xy1[1] > xy2[1] + h / 2) {
 //		rotate(0, h, 0, w)
 //	}
-	best_fit()
+    best_fit(0, Math.PI, -1)
 };
 /*
 var rotate = function(b, t, l, r) {

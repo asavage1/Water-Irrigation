@@ -30,8 +30,7 @@ var sub_centr = function(map, centroid) {
 var find_perp = function(map) {
     var decomp = numeric.svd(map);
     //assume we found the least singular value in decomp
-    console.log(decomp['U'][0]); // [key][index]
-    var perp = decomp['U'][0][0];
+    var perp = decomp['U'][0]; //key, index
     return perp;
 }
 
@@ -51,10 +50,27 @@ var find_angle = function(v1, v2) {
         
 }
 
-var find_fit = function(map1, map2) {
+var find_proj_angle(v1, v2) {
+    var num = v1[0]*v2[0] + v1[1]*v2[1];
+    var den1 = Math.sqrt(v1[0]*v1[0] + v1[1]*v1[1]);
+    var den2 = Math.sqrt(v2[0]*v2[0] + v2[1]*v2[1]);
+    return Math.acos(num / (den1 * den2));}
+
+var find_fit = function(map1, map2, leaf_ind, fit, fit_index) {
     var p1 = fit_plane(map1);
     var p2 = fit_plane(map2);
-    var angle = find_angle(p1, p2);
+    var angle = Math.abs(find_angle(p1, p2));
+    console.log(angle, fit);
+    if (angle < fit) {
+        console.log(angle);
+        fit = angle;
+        fit_index = leaf_ind;
+    }
+    if (leaf_ind < 9)
+        best_fit(leaf_ind + 1, fit, fit_index);
+    else {
+        result(fit_index);
+    }
 }
 
 
@@ -80,17 +96,9 @@ var euc_dist_pt = function(v1, v2) {
 */
 
 
-var best_fit = function() {
-    fit = -1;
-    fit_index = -1;
-    for (var leaf_ind = 0; leaf_ind < contrasts.length; leaf_ind++) {
-        tfit = find_fit(contrasts[leaf_ind], avg);
-        if (tfit > fit) {
-            fit = tfit;
-            fit_index = leaf_ind;
-        }
-    }
-    result(leaf_ind);
+var best_fit = function(leaf_ind, fit, fit_index) {
+    find_fit(contrasts[leaf_ind], avg, leaf_ind, fit, fit_index);
+
 }
 
 
