@@ -1,6 +1,6 @@
-IDHack 2017 Project
+# IDHack 2017 Project
 
-Algorithm Outline:
+## Algorithm Outline:
 - Leaf Processing
   - read in image of leaf
   - convert image to rgb format
@@ -24,4 +24,6 @@ Algorithm Outline:
   - rotate that line segment to be vertical
 - Comparison
   - for each leaf
-    - 
+    - compute fitness of each pixel
+    - compute overall fitness
+  - output best leaf!
