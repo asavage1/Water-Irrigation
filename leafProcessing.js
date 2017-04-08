@@ -3,7 +3,7 @@
 
 //constants:
 var split_size = 64;
-
+var num_leaves = 21;
 
 var split_img = function(canvas, img, width, height, imgd, pix, THECOUNT) {
     var condensed_img = new Array(Math.ceil(height / split_size));
@@ -98,7 +98,7 @@ var avg_pixels = function(canvas, img, width, height, imgd, pix, condensed_img, 
     }
 
     contrasts[THECOUNT - 1] = leaf_contrast;
-    if (THECOUNT < 10)
+    if (THECOUNT < num_leaves)
 	start(THECOUNT+1)
 
     //convert_final();
@@ -283,7 +283,7 @@ var convert_final = function() {
   //  document.getElementsByTagName("body")[0].append(output_pix);
 }*/
 
-contrasts = new Array(10);
+contrasts = new Array(num_leaves);
 
 
 var start = function (THECOUNT) {
