@@ -23,7 +23,7 @@ var split_img = function() {
 
             for (var j = l; j < cur_height; j++) {
                 for (var i = k; i < cur_width; i+= 4) {
-                    var n = j * height + i;                    
+                    var n = j * width * 4 + i;                    
                     avg_red += pix[n] / (cur_width * cur_height);
                     avg_green += pix[n + 1] / (cur_width * cur_height);
                     avg_blue += pix[n + 2] / (cur_width * cur_height);
@@ -49,6 +49,7 @@ var avg_pixels = function() {
     for (var x = 0; x < height; x++) {
         leaf_density[x] = new Array(width);
     }
+    
     for (var l = 0; l < height; l += split_size) { //current block height
         cur_height = Math.min(l + split_size, height);
   
@@ -61,7 +62,7 @@ var avg_pixels = function() {
 
             for (var j = l; j < cur_height; j++) {
                 for (var i = k; i < cur_width; i+= 4) {
-                    var n = j * height + i; //pixel index in pix
+                    var n = j * width * 4 + i; //pixel index in pix
                     var avg_boxes = take_avg_boxes(l / split_size, k / split_size);
                     var diff = compute_diff(pix.slice(n, n+3), avg_boxes);
                     
@@ -178,7 +179,38 @@ var compute_diff = function(v1, v2) { //v1.length = v2.length
 
 
 
+// Convert leaf representation into canvas "output_pix"
+var convert_final = function() {
+    //leaf_density
+    //output_pix.width = leaf_density.length;
+    //output_pix.height = leaf_density[0].length;
+    var ctx = output_pix.getContext("2d");
+    imgData = ctx.createImageData(leaf_density[0].length, leaf_density.length);
+
+    var max = 0;
+    for (var i = 0; i < 4 * leaf_density.length; i++) {
+        var m1 = Math.max.apply(Math, leaf_density[i]);
+        if (m1 > max) {max = m1;}
+    }
+    
+    for (var i = 0; i < imgData.height; i++) {
+        for (var j = 0; j < 4 * imgData.width; j+= 4) {
+            var pix_n = i * imgData.width * 4 + j;
+            imgData.data[pix_n] = (leaf_density[i][j] / max) * 255;
+            imgData.data[pix_n + 1] = 0;
+            imgData.data[pix_n + 2] = 0;
+            imgData.data[pix_n + 3] = 255;
+        }
+    }
+    ctx.putImageData(imgData, 10, 10);
+    document.getElementsByTagName("body")[0].append(output_pix);
+}
+
+
+
 var canvas = document.createElement('canvas');
+var output_pix = document.createElement('canvas');
+//var output_pix = document.getElementById("myCanvas");
 
 var img = new Image();
 img.src = "leaf1.png" //Relative directory of the image
@@ -190,6 +222,9 @@ img.onload = function() {
     canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height);
     imgd = canvas.getContext('2d').getImageData(0, 0, width, height);
     pix = imgd.data;
+    
     split_img();
     avg_pixels();
+
+    convert_final();
 }
