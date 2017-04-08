@@ -243,7 +243,7 @@ var compute_diff = function(v1, v2) { //v1.length = v2.length
 
 var convert_final = function() {
     var ctx = output_pix.getContext("2d");
-    imgData = ctx.createImageData(4 * leaf_contrast[0].length, leaf_contrast.length);
+    imgData = ctx.createImageData(leaf_contrast[0].length, leaf_contrast.length);
     output_pix.style.height='1200px';
     output_pix.style.width = '1600px';
     //imgData = ctx.createImageData(imgd);
@@ -262,13 +262,14 @@ var convert_final = function() {
 
     count = 0;
     for (var i = 0; i < height; i++) {
-        for (var j = 0; j < 4 * width; j++) {
-            if (leaf_contrast[i][j] >= 0) {
+        for (var j = 0; j < width; j++) {
+            
+            if (leaf_contrast[i][j] >= 1) {
                 imgData.data[count] = 255;
             } else {
                 imgData.data[count] = 0;
             }
-            //imgData.data[count] = leaf_contrast[i][j] * 255 / avg;//Math.pow(2, max - leaf_contrast[i][j]);
+            //imgData.data[count] = Math.pow(2, max - leaf_contrast[i][j]);
             imgData.data[count + 1] = 0;
             imgData.data[count + 2] = 0;
             imgData.data[count + 3] = 255;
