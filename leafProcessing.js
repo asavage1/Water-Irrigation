@@ -10,7 +10,6 @@ var canvas = document.createElement('canvas');
 
 
 
-
 var img = new Image();
 img.src = "leaf1.png" //Relative directory of the image
 img.onload = function() {
