@@ -26,6 +26,7 @@ var split_img = function() {
             }
         }
     }
+    avg_pixels();
 }
 
 /*
@@ -95,7 +96,8 @@ var avg_pixels = function() {
         }
     }
 
-    
+    contrasts[THECOUNT - 1] = leaf_contrast;
+    convert_final();
 }
 
 /*
@@ -277,26 +279,28 @@ var convert_final = function() {
     document.getElementsByTagName("body")[0].append(output_pix);
 }
 
+var contrasts = new Array(10);
 
-var canvas = document.createElement('canvas');
-var output_pix = document.createElement('canvas');
-//var output_pix = document.getElementById("myCanvas");
+for (THECOUNT = 1; THECOUNT <= 1; THECOUNT++) {
+     canvas = document.createElement('canvas');
+     output_pix = document.createElement('canvas');
+    //var output_pix = document.getElementById("myCanvas");
 
-var img = new Image();
-img.src = "leaf1.png" //Relative directory of the image
-img.onload = function() {
-    width = img.width;
-    height = img.height;
-    canvas.width = img.width;
-    canvas.height = img.height;
-    canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height);
-    imgd = canvas.getContext('2d').getImageData(0, 0, width, height);
-    pix = imgd.data;
-    
-    split_img();
-    avg_pixels();
+     img = new Image();
+    img.src = "leaf" + THECOUNT + ".png" //Relative directory of the image
+    img.onload = function() {
+        width = img.width;
+        height = img.height;
+        canvas.width = img.width;
+        canvas.height = img.height;
+        canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height);
+        imgd = canvas.getContext('2d').getImageData(0, 0, width, height);
+        pix = imgd.data;
+        
+        split_img();
+        //avg_pixels();
 
-    convert_final();
+        //convert_final();
+    }
 }
-
-document.getElementsByTagName("body")[0].append(canvas);
+//document.getElementsByTagName("body")[0].append(canvas);
