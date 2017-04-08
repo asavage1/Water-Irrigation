@@ -98,5 +98,16 @@ var findMax = function () {
 			}
 		}
 	}
-	console.log(max1, max2, xy1, xy2);
+	while (xy1[1] < xy2[1] - h / 2 || xy1[1] > xy2[1] + h / 2) {
+		rotate(0, h, 0, w)
+	}
 };
+
+var rotate = function(b, t, l, r) {
+	if (b < t && l < r) {
+		var turns = rotate(b + 1, t - 1, l + 1, r - 1)
+	} else {
+		return 1;
+	}
+	return turns + 1;
+}
