@@ -2,9 +2,9 @@
 // Andrew Savage and Elias Marcopoulos
 
 //constants:
-var split_size = 64;
+var split_size = 256;
 
-var img = document.getElementById('leaf1.png');
+//var img = document.getElementById('leaf1.png');
 var canvas = document.createElement('canvas');
 
 
@@ -43,7 +43,8 @@ var split_img = function() {
         
         cur_height = Math.min(l + split_size, height);
   
-        for (var k = 0; k < 4 * width; k += 4 * split_size) {
+        for (var k = 0; k < width; k += 4 * split_size) {
+            console.log(k)
             cur_width = Math.min(k + 4 * split_size, width);
             var avg_red = 0;
             var avg_green = 0;
@@ -55,8 +56,8 @@ var split_img = function() {
                     var n = j * height + i;                    
                     avg_red += pix[n] / (cur_width * cur_height);
                     avg_green += pix[n + 1] / (cur_width * cur_height);
-                    avg_blue = pix[n + 2] / (cur_width * cur_height);
-                    avg_alpha = pix[n + 3] / (cur_width * cur_height);
+                    avg_blue += pix[n + 2] / (cur_width * cur_height);
+                    avg_alpha += pix[n + 3] / (cur_width * cur_height);
                 }
             }
       
