@@ -56,4 +56,122 @@ var split_img = function() {
     console.log(condensed_img);
 }
 
+var avg_pixels = function() {
+    for (var l = 0; l < height; l += split_size) { //current block height
+        
+        cur_height = Math.min(l + split_size, height);
+  
+        for (var k = 0; k < 4 * width; k += 4 * split_size) { //cur block width
+            cur_width = Math.min(k + 4 * split_size, 4 * width);
+            var avg_red = 0;
+            var avg_green = 0;
+            var avg_blue = 0;
+            var avg_alpha = 0;
 
+            for (var j = l; j < cur_height; j++) {
+                for (var i = k; i < cur_width; i+= 4) {
+                    var n = j * height + i; //pixel index in pix
+                    var avg_boxes = take_avg_boxes(condensed_img, l, k);
+                    var diff = compute_diff(pix[n:n+3], avg_boxes);
+                    
+                }
+            }
+        }
+    }
+}
+
+var take_avg_boxes = function(cimg, i, j) {
+    var avg_red = 0
+    var avg_green = 0;
+    var avg_blue = 0;
+    var avg_alpha = 0;
+    var total = 0;
+    var left = (i - 1 >= 0);
+    var right = (i + 1 < cimg.length);
+    var up = (j - 1 >= 0);
+    var down = (j + 1 < cimg[0].length);
+
+    total++;
+    avg_red += cimg[i][j];
+    avg_green += cimg[i + 1][j];
+    avg_blue += cimg[i + 2][j];
+    avg_alpha += cimg[i + 3][j];
+    
+    if (left) {
+        total++;
+        avg_red += cimg[i - 4][j];
+        avg_green += cimg[i - 3][j];
+        avg_blue += cimg[i - 2][j];
+        avg_alpha += cimg[i - 1][j];
+
+        if (up) {
+            total++;
+            avg_red += cimg[i - 4][j - 1];
+            avg_green += cimg[i - 3][j - 1];
+            avg_blue += cimg[i - 2][j - 1];
+            avg_alpha += cimg[i - 1][j - 1];
+        }
+
+        if (down) {
+            total++;
+            avg_red += cimg[i - 4][j + 1];
+            avg_green += cimg[i - 3][j + 1];
+            avg_blue += cimg[i - 2][j + 1];
+            avg_alpha += cimg[i - 1][j + 1];
+        }
+    }
+
+    if (right) {
+        total++;
+        avg_red += cimg[i + 5][j];
+        avg_green += cimg[i + 6][j];
+        avg_blue += cimg[i + 7][j];
+        avg_alpha += cimg[i + 8][j];
+
+        if (up) {
+            total++;
+            avg_red += cimg[i + 5][j - 1];
+            avg_green += cimg[i + 6][j - 1];
+            avg_blue += cimg[i + 7][j - 1];
+            avg_alpha += cimg[i + 8][j - 1];
+        }
+
+        if (down) {
+            total++;
+            avg_red += cimg[i + 5][j + 1];
+            avg_green += cimg[i + 6][j + 1];
+            avg_blue += cimg[i + 7][j + 1];
+            avg_alpha += cimg[i + 8][j + 1];
+        }
+    }
+
+    if (up) {
+        total++;
+        avg_red += cimg[i + 1][j - 1];
+        avg_green += cimg[i + 2][j - 1];
+        avg_blue += cimg[i + 3][j - 1];
+        avg_alpha += cimg[i + 4][j - 1];
+    }
+
+    if (down) {
+        total++;
+        avg_red += cimg[i + 1][j + 1];
+        avg_green += cimg[i + 2][j + 1];
+        avg_blue += cimg[i + 3][j + 1];
+        avg_alpha += cimg[i + 4][j + 1];
+    }
+
+    avg_red /= total;
+    avg_green /= total;
+    avg_blue /= total;
+    avg_alpha /= total;
+    return [avg_red, avg_green, avg_blue, avg_alpha];
+}
+
+var compute_diff = function(v1, v2) { //v1.length = v2.length
+    var sum = 0;
+    for (var i = 0; i < v1.length; i++) {
+        sum += v1[i] - v2[i];
+    }
+    return sum;
+}
