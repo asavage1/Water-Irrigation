@@ -2,7 +2,8 @@
 // Andrew Savage and Elias Marcopoulos
 
 //constants:
-var split_size = 32;
+var split_size = 4;
+
 
 
 var split_img = function() {
@@ -20,14 +21,28 @@ var split_img = function() {
             var avg_green = 0;
             var avg_blue = 0;
             var avg_alpha = 0;
-
+            var total_red = 0;
+            var total_green = 0;
+            var total_blue = 0;
+            var total_alpha = 0;
+            
             for (var j = l; j < cur_height; j++) {
                 for (var i = k; i < cur_width; i+= 4) {
                     var n = j * width * 4 + i;                    
-                    avg_red += pix[n] / (cur_width * cur_height);
-                    avg_green += pix[n + 1] / (cur_width * cur_height);
-                    avg_blue += pix[n + 2] / (cur_width * cur_height);
-                    avg_alpha += pix[n + 3] / (cur_width * cur_height);
+                    total_red += pix[n];
+                    total_green += pix[n + 1];
+                    total_blue += pix[n + 2];
+                    total_alpha += pix[n + 3];
+                }
+            }
+            
+            for (var j = l; j < cur_height; j++) {
+                for (var i = k; i < cur_width; i+= 4) {
+                    var n = j * width * 4 + i;                    
+                    avg_red += pix[n] / total_red;
+                    avg_green += pix[n + 1] / total_green;
+                    avg_blue += pix[n + 2] / total_blue;
+                    avg_alpha += pix[n + 3] / total_alpha;
                 }
             }
       
@@ -197,7 +212,7 @@ var convert_final = function() {
     for (var i = 0; i < imgData.height; i++) {
         for (var j = 0; j < 4 * imgData.width; j+= 4) {
             var pix_n = i * imgData.width * 4 + j;            
-            imgData.data[pix_n] = Math.max(255 + Math.log(condensed_img[i][j] / max), 0);
+            imgData.data[pix_n] = condensed_img[i][j] * 255 / max; //Math.max(255 + Math.log(condensed_img[i][j] / max));
             imgData.data[pix_n + 1] = 0;
             imgData.data[pix_n + 2] = 0;
             imgData.data[pix_n + 3] = 255;
