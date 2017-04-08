@@ -115,6 +115,7 @@ var rotate = function(b, t, l, r) {
 }*/
 
 var result = function(i, angle) {
+
 	document.getElementById("result").style["-ms-transform"]= "rotate(" +angle+"rad)"; /* IE 9 */
     document.getElementById("result").style["-webkit-transform"]= "rotate(" + angle + "rad)"; /* Chrome, Safari, Opera */
 	document.getElementById("result").src = "leaf" + (i + 1) + ".png";

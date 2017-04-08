@@ -71,11 +71,11 @@ var min_dist = function(v1, v2, angle) {
 var find_fit = function(map1, map2, leaf_ind, fit, fit_index) {
     var p1 = fit_plane(map1);
     var p2 = fit_plane(map2);
-    console.log(p1, p2);
+    //console.log(p1, p2);
     var angle = Math.abs(find_angle(p1, p2));
-    console.log(angle, fit);
+    //console.log(angle, fit);
     if (angle < fit) {
-        console.log(angle);
+        //console.log(angle);
         fit = angle;
         fit_index = leaf_ind;
     }
@@ -86,11 +86,11 @@ var find_fit = function(map1, map2, leaf_ind, fit, fit_index) {
         //rotate p1 to p2
         p1 = fit_plane(contrasts[fit_index]).slice(0,2);
         p2 = fit_plane(avg).slice(0,2);
-        console.log(p1, p2);
+        //console.log(p1, p2);
         angle = find_proj_angle(p1, p2);
-        console.log(angle);
+        //console.log(angle);
         angle = min_dist(p1, p2, angle);
-        console.log(angle);
+        //console.log(angle);
         result(fit_index, angle);
     }
 }
