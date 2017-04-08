@@ -4,11 +4,7 @@
 //constants:
 var split_size = 256;
 
-//var img = document.getElementById('leaf1.png');
 var canvas = document.createElement('canvas');
-
-
-
 
 var img = new Image();
 img.src = "leaf1.png" //Relative directory of the image
@@ -23,16 +19,6 @@ img.onload = function() {
     split_img();
 }
 
-
-/*
-var canvas = document.createElement('canvas');
-document.body.appendChild(canvas);
-
-canvas.drawImage(img, 0, 0);
-var imgData = canvas.getImageData(x, y, width, height).data;
-*/
-
-
 var split_img = function() {
     condensed_img = []
 
@@ -42,9 +28,8 @@ var split_img = function() {
         
         cur_height = Math.min(l + split_size, height);
   
-        for (var k = 0; k < width; k += 4 * split_size) {
-            console.log(k)
-            cur_width = Math.min(k + 4 * split_size, width);
+        for (var k = 0; k < 4 * width; k += 4 * split_size) {
+            cur_width = Math.min(k + 4 * split_size, 4 * width);
             var avg_red = 0;
             var avg_green = 0;
             var avg_blue = 0;
