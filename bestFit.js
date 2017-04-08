@@ -57,6 +57,17 @@ var find_proj_angle = function(v1, v2) {
     return Math.acos(num / (den1 * den2));
 }
 
+var min_dist = function(v1, v2, angle) {
+    x1 = v1[0] * Math.cos(angle) - v1[1] * Math.sin(angle);
+    x2 = v1[0] * Math.sin(angle) + v1[1] * Math.cos(angle);
+    angle_new = find_proj_angle([x1, x2], v2);
+    if (angle_new <= angle) {
+        return -angle;
+    } else {
+        return angle;
+    }
+}
+
 var find_fit = function(map1, map2, leaf_ind, fit, fit_index) {
     var p1 = fit_plane(map1);
     var p2 = fit_plane(map2);
@@ -77,6 +88,8 @@ var find_fit = function(map1, map2, leaf_ind, fit, fit_index) {
         p2 = fit_plane(avg).slice(0,2);
         console.log(p1, p2);
         angle = find_proj_angle(p1, p2);
+        console.log(angle);
+        angle = min_dist(p1, p2, angle);
         console.log(angle);
         result(fit_index, angle);
     }
