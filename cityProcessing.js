@@ -3,7 +3,7 @@ var grid = 64;
 var canvas2 = document.createElement('canvas');
 var context = canvas2.getContext('2d');
 var density = [];
-var avg = new Array(grid);
+var avg = [];
 
 function previewFile() {
     var preview = document.querySelector('img');
@@ -15,6 +15,7 @@ function previewFile() {
         img2.onload = function() {
         	width2 = img2.width;
 		    height2 = img2.height;
+//		    console.log(width2, height2)
 		    canvas2.width = img2.width;
 		    canvas2.height = img2.height;
     	    context.drawImage(img2, 0, 0);
@@ -32,7 +33,7 @@ function previewFile() {
 }
 
 var reduce = function(array) {
-	for (var i = 0; i < width2; i++) {
+	for (var i = 0; i < height2; i++) {
 		density.push([]);
 	}
 	var k = 0;
@@ -47,11 +48,55 @@ var reduce = function(array) {
 };
 
 var splitAndAverage = function () {
-	for (var i = 0; i < grid; i++) {
-		var sum = 0;
-		for (var j = grid * i; j < grid * (i + 1) && j < height2; j++) {
-			sum += density[j];	
-		}
-		avg = sum / grid;
+	for (var i = 0; i <= Math.floor(height2 / grid); i++) {
+		avg.push([]);
 	}
+	for (var i = 0; i <= Math.floor(height2 / grid); i++) {
+		for (var j = 0; j <= Math.floor(width2 / grid); j++) {
+			avg[i][j] = 0;
+		}
+	}
+//	console.log(avg, Math.floor(height2 / grid))
+	for (var i = 0; i < height2; i++) {
+		for (var j = 0; j < width2; j++) {
+//			if (Math.floor(i / grid) >= Math.floor(height2 / grid)) {
+//				console.log(Math.floor(i/grid)) }
+//			if (i < 4) {
+//			console.log(density[i][j]);
+//			console.log(Math.floor(i/grid), Math.floor(j/grid), avg[Math.floor(i/grid)][Math.floor(j/grid)])	}		
+			avg[Math.floor(i/grid)][Math.floor(j/grid)] += density[i][j];
+//			if (i < 4)
+//			console.log(Math.floor(i/grid), Math.floor(j/grid), avg[Math.floor(i/grid)][Math.floor(j/grid)])			
+		}
+	}
+//	console.log(avg);
+	for (var i = 0; i <= Math.floor(height2 / grid); i++) {
+		for (var j = 0; j <= Math.floor(width2 / grid); j++) {
+			avg[i][j] /= (grid * grid);
+		}
+	}
+	findMax();
+};
+
+var findMax = function () {
+	var h = Math.floor(height2 / grid) + 1;
+	var w = Math.floor(width2 / grid) + 1;
+	var max1 = -999;
+	var xy1 = [-1,-1];
+	var max2 = -999;
+	var xy2 = [-1,-1];
+	for (var i = 0; i < h; i++) {
+		for (var j = 0; j < w; j++) {
+			if (avg[i][j] > max1) {
+				max1 = avg[i][j];
+				xy1[0] = i;
+				xy1[1] = j;
+			} else if (avg[i][j] >= max2) {
+				max2 = avg[i][j];
+				xy2[0] = i;
+				xy2[1] = j;
+			}
+		}
+	}
+	console.log(max1, max2, xy1, xy2);
 };
