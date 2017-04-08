@@ -42,6 +42,9 @@ var split_img = function() {
 }
 
 var avg_pixels = function() {
+    
+    testing = []; // TESTING ARRAY, REMOVE
+    
     leaf_density = new Array(height);
     for (var x = 0; x < height; x++) {
         leaf_density[x] = new Array(width);
@@ -61,6 +64,7 @@ var avg_pixels = function() {
                     var n = j * height + i; //pixel index in pix
                     var avg_boxes = take_avg_boxes(l / split_size, k / split_size);
                     var diff = compute_diff(pix.slice(n, n+3), avg_boxes);
+                    
                     leaf_density[j][i / 4] = diff;
                 }
             }
@@ -166,8 +170,9 @@ var take_avg_boxes = function(i, j) { //using condensed_img
 var compute_diff = function(v1, v2) { //v1.length = v2.length
     var sum = 0;
     for (var i = 0; i < v1.length; i++) {
-        sum += v1[i] - v2[i];
+        sum += Math.pow(v1[i] - v2[i], 2);
     }
+    Math.sqrt(sum);
     return sum;
 }
 
