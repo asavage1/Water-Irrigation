@@ -113,5 +113,7 @@ var rotate = function(b, t, l, r) {
 	return turns + 1;
 }*/
 
-
+var result = function(i) {
+	document.getElementById("result").src = "leaf" + (i + 1) + ".png";
+}
 
