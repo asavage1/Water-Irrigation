@@ -83,7 +83,7 @@ var euc_dist_pt = function(v1, v2) {
 var best_fit = function() {
     fit = -1;
     fit_index = -1;
-    for (var leaf_ind = 0; leaf_ind < 1/*contrasts.length*/; leaf_ind++) {
+    for (var leaf_ind = 0; leaf_ind < contrasts.length; leaf_ind++) {
         tfit = find_fit(contrasts[leaf_ind], avg);
         if (tfit > fit) {
             fit = tfit;
@@ -92,6 +92,28 @@ var best_fit = function() {
     }
     result(leaf_ind);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
