@@ -236,8 +236,7 @@ var compute_diff = function(v1, v2) { //v1.length = v2.length
     for (var i = 0; i < v1.length; i++) {
         sum += Math.pow(v1[i] - v2[i], 2);
     }
-    Math.sqrt(sum);
-    return sum;
+    return Math.sqrt(sum);
 }
 
 
