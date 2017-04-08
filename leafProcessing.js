@@ -2,7 +2,7 @@
 // Andrew Savage and Elias Marcopoulos
 
 //constants:
-var split_size = 256;
+var split_size = 32;
 
 
 var split_img = function() {
@@ -44,6 +44,7 @@ var split_img = function() {
 var avg_pixels = function() {
     
     testing = []; // TESTING ARRAY, REMOVE
+
     
     leaf_density = new Array(height);
     for (var x = 0; x < height; x++) {
@@ -181,22 +182,22 @@ var compute_diff = function(v1, v2) { //v1.length = v2.length
 
 // Convert leaf representation into canvas "output_pix"
 var convert_final = function() {
-    //leaf_density
-    //output_pix.width = leaf_density.length;
-    //output_pix.height = leaf_density[0].length;
+    //condensed_img
+    //output_pix.width = condensed_img.length;
+    //output_pix.height = condensed_img[0].length;
     var ctx = output_pix.getContext("2d");
-    imgData = ctx.createImageData(leaf_density[0].length, leaf_density.length);
+    imgData = ctx.createImageData(condensed_img[0].length, condensed_img.length);
 
     var max = 0;
-    for (var i = 0; i < 4 * leaf_density.length; i++) {
-        var m1 = Math.max.apply(Math, leaf_density[i]);
+    for (var i = 0; i < 4 * condensed_img.length; i++) {
+        var m1 = Math.max.apply(Math, condensed_img[i]);
         if (m1 > max) {max = m1;}
     }
     
     for (var i = 0; i < imgData.height; i++) {
         for (var j = 0; j < 4 * imgData.width; j+= 4) {
-            var pix_n = i * imgData.width * 4 + j;
-            imgData.data[pix_n] = (leaf_density[i][j] / max) * 255;
+            var pix_n = i * imgData.width * 4 + j;            
+            imgData.data[pix_n] = Math.max(255 + Math.log(condensed_img[i][j] / max), 0);
             imgData.data[pix_n + 1] = 0;
             imgData.data[pix_n + 2] = 0;
             imgData.data[pix_n + 3] = 255;
@@ -204,6 +205,8 @@ var convert_final = function() {
     }
     ctx.putImageData(imgData, 10, 10);
     document.getElementsByTagName("body")[0].append(output_pix);
+
+    console.log(imgData.data);
 }
 
 
