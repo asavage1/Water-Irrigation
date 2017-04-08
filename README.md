@@ -14,4 +14,14 @@ Algorithm Outline:
 - City Processing
   - read in population density map
   - convert image to readable format
-  - 
+  - for each pixel
+    - reduce information in each pixel to population parameter
+    - put in new 
+  - split into 64x64 grid
+  - calculate average of each grid
+  - find two highest
+  - connect in line sigment
+  - rotate that line segment to be vertical
+- Comparison
+  - for each leaf
+    - 
