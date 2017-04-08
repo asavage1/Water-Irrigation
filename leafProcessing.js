@@ -100,6 +100,7 @@ var avg_pixels = function(canvas, img, width, height, imgd, pix, condensed_img, 
     contrasts[THECOUNT - 1] = leaf_contrast;
     if (THECOUNT < 10)
 	start(THECOUNT+1)
+
     //convert_final();
 }
 
@@ -282,7 +283,8 @@ var convert_final = function() {
   //  document.getElementsByTagName("body")[0].append(output_pix);
 }*/
 
-var contrasts = new Array(10);
+contrasts = new Array(10);
+
 
 var start = function (THECOUNT) {
      var canvas = document.createElement('canvas');
@@ -290,6 +292,10 @@ var start = function (THECOUNT) {
     //var output_pix = document.getElementById("myCanvas");
 
      var img = new Image();
+
+
+
+    img = new Image();
     img.src = "leaf" + THECOUNT + ".png" //Relative directory of the image
     img.onload = function() {
         var width = img.width;
@@ -298,7 +304,11 @@ var start = function (THECOUNT) {
         canvas.height = img.height;
         canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height);
         var imgd = canvas.getContext('2d').getImageData(0, 0, width, height);
+
         var pix = imgd.data;
+
+        pix = imgd.data;
+
         
         split_img(canvas, img, width, height, imgd, pix, THECOUNT);
         //avg_pixels();
